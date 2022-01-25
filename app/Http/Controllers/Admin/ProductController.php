@@ -15,7 +15,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::orderBy('id', 'DESC')->paginate(15);
+        return view('admin.products.index', compact('products'));
     }
 
     /**
@@ -25,7 +26,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.products.create');
     }
 
     /**
@@ -36,7 +37,13 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $products = new Product();
+
+        $products->name = $request->name;
+        $products->detail = $request->detail;
+        $products->save();
+
+        return redirect()->route('products.index')->with(session()->flash('success', 'Aggiuto con successo!'));
     }
 
     /**
@@ -47,7 +54,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        return view('admin.products.show', compact('product'));
     }
 
     /**
@@ -58,7 +65,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return view('admin.products.edit', compact('product'));
     }
 
     /**
@@ -70,7 +77,10 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $product_data = $request->all();
+        $product->update($product_data);
+
+        return redirect()->route('products.index')->with(session()->flash('success', 'Aggiornato con successo!'));
     }
 
     /**
@@ -81,6 +91,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
+        return redirect()->route('products.index')->with(session()->flash('success', 'Eliminato con successo!'));
     }
 }
