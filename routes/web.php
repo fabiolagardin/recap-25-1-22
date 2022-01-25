@@ -18,4 +18,8 @@ Route::resource('admin/products', 'Admin\ProductController');
 
 Route::get('/', 'ProductController@index')->name('products');
 
-Route::get('/{product}', 'ProductController@show')->name('product');
+Route::get('/products/{product}', 'ProductController@show')->name('product');
+
+Route::get('/contacts', function () {
+    return view('contact');
+});
